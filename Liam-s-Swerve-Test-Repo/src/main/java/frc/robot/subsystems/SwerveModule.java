@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants;
+import frc.robot.Constants.CTREConfigs;
 
 public class SwerveModule {
 
@@ -47,6 +48,8 @@ public class SwerveModule {
    * The target wheel speed in rotations per second
    */
   private double m_desiredDriveSpeed;
+
+  private CTREConfigs ctreConfig = new CTREConfigs();
 
   private VelocityDutyCycle m_driveControl = new VelocityDutyCycle(0, true, 0, 0, false);
   private PositionDutyCycle m_steerControl = new PositionDutyCycle(0, true, 0, 0, false);
@@ -78,13 +81,13 @@ public class SwerveModule {
     // com.ctre.phoenix.motorcontrol.can.TalonFX testmotor = new com.ctre.phoenix.motorcontrol.can.TalonFX(1);
    
 
-    CANcoderConfiguration steerEncoderConfig = DrivetrainSubsystem.ctreConfig.steerEncoderConfig;
-    TalonFXConfiguration steerMotorConfig = DrivetrainSubsystem.ctreConfig.steerMotorConfig;
+    CANcoderConfiguration steerEncoderConfig = ctreConfig.steerEncoderConfig;
+    TalonFXConfiguration steerMotorConfig = ctreConfig.steerMotorConfig;
 
     steerEncoderConfig.MagnetSensor.MagnetOffset = -m_steerEncoderOffset.getRotations();
     steerMotorConfig.Feedback.FeedbackRemoteSensorID = steerEncoderChannel;
     // Apply the configurations.
-    m_driveMotor.getConfigurator().apply(DrivetrainSubsystem.ctreConfig.driveMotorConfig);
+    m_driveMotor.getConfigurator().apply(ctreConfig.driveMotorConfig);
     m_steerMotor.getConfigurator().apply(steerMotorConfig);
     m_steerEncoder.getConfigurator().apply(steerEncoderConfig);
     }
@@ -228,13 +231,13 @@ public class SwerveModule {
     SwerveModuleState.optimize(desiredState, getRotation());
 
     m_desiredSteerAngle = MathUtil.inputModulus(state.angle.getRotations(), -0.5, 0.5);
-    m_desiredDriveSpeed = state.speedMetersPerSecond / DriveConstants.DRIVETRAIN_ROTATIONS_TO_METERS;
+    m_desiredDriveSpeed = state.speedMetersPerSecond / Constants.DRIVETRAIN_ROTATIONS_TO_METERS;
 
     if (Math.abs(m_desiredDriveSpeed) <= 0.001) {
       m_driveMotor.setControl(m_neutralControl);
       m_steerMotor.setControl(m_steerControl.withPosition(m_desiredSteerAngle));
     } else {
-      m_driveMotor.setControl(m_driveControl.withVelocity(m_desiredDriveSpeed).withFeedForward(m_desiredDriveSpeed/DriveConstants.MAX_VELOCITY_RPS_EMPIRICAL));
+      m_driveMotor.setControl(m_driveControl.withVelocity(m_desiredDriveSpeed).withFeedForward(m_desiredDriveSpeed/Constants.MAX_VELOCITY_RPS_EMPIRICAL));
       m_steerMotor.setControl(m_steerControl.withPosition(m_desiredSteerAngle));
     }
   }
