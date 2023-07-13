@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -56,6 +58,7 @@ public class RobotContainer {
 
     driveController = new PS4Controller(0);
     eventMap  = new HashMap<>();
+    autoChooser = new SendableChooser<>();
 
     drivetrain = new DrivetrainSubsystem();
 
@@ -77,7 +80,13 @@ public class RobotContainer {
 
   public void autoInit()
   {
-    //start auto things
+    autos = Autos.getInstance();
+    eventMap.put("marker1", new PrintCommand("passed marker 1"));
+    eventMap.put("marker2", new PrintCommand("passed marker 2"));
+    eventMap.put("stop", new InstantCommand(drivetrain::stop, drivetrain));
+
+    autos.autoInit(autoChooser, eventMap, drivetrain);
+    SmartDashboard.putData(autoChooser);
   }
 
 
@@ -109,6 +118,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoChooser.getSelected();
   }
 }
