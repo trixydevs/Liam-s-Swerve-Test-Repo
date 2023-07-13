@@ -29,6 +29,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 //import edu.wpi.first.wpilibj.Math.kinematics.*;
+import frc.robot.Constants.Offsets;
+import frc.robot.Constants.Positions;
 
 public class DrivetrainSubsystem extends SubsystemBase {
   /** Creates a new DrivetrainSubsystem. */
@@ -65,7 +67,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     Constants.FL_DRIVE_MOTOR_ID,
     Constants.FL_STEER_MOTOR_ID,
     Constants.FL_STEER_ENCODER_ID,
-    Constants.FL_STEER_OFFSET,
+    Offsets.valueOf(Preferences.getString("FL", "AUGIE")).getValue(Positions.FL),
     Constants.CANIVORE_DRIVETRAIN
     );
 
@@ -74,27 +76,29 @@ public class DrivetrainSubsystem extends SubsystemBase {
     Constants.FR_DRIVE_MOTOR_ID,
     Constants.FR_STEER_MOTOR_ID,
     Constants.FR_STEER_ENCODER_ID,
-    Constants.FR_STEER_OFFSET,
+    Offsets.valueOf(Preferences.getString("FR", "AUGIE")).getValue(Positions.FR),
     Constants.CANIVORE_DRIVETRAIN
     );
 
     modules[2] = new SwerveModule(
-    "BR",
-    Constants.BL_DRIVE_MOTOR_ID,
-    Constants.BL_STEER_MOTOR_ID,
-    Constants.BL_STEER_ENCODER_ID,
-    Constants.BL_STEER_OFFSET,
-    Constants.CANIVORE_DRIVETRAIN
-    );
+      "BL",
+      Constants.BL_DRIVE_MOTOR_ID,
+      Constants.BL_STEER_MOTOR_ID,
+      Constants.BL_STEER_ENCODER_ID,
+      Offsets.valueOf(Preferences.getString("BL", "AUGIE")).getValue(Positions.BL),
+      Constants.CANIVORE_DRIVETRAIN
+      );
 
     modules[3] = new SwerveModule(
-    "FL",
+    "BR",
     Constants.BR_DRIVE_MOTOR_ID,
     Constants.BR_STEER_MOTOR_ID,
     Constants.BR_STEER_ENCODER_ID,
-    Constants.BR_STEER_OFFSET,
+    Offsets.valueOf(Preferences.getString("BR", "AUGIE")).getValue(Positions.BR),
     Constants.CANIVORE_DRIVETRAIN
     );
+
+  
 
     odometer = new SwerveDrivePoseEstimator(kinematics, getGyroscopeRotation(), getModulePositions(), Constants.DRIVE_ODOMETRY_ORIGIN);
 

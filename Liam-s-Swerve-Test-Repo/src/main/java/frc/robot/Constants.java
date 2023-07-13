@@ -206,11 +206,11 @@ public final class Constants {
 
     // Auto PID loops
     // twin pid controllers that control the x and y robot movements.
-    public static final double k_XY_P = 2.5;
+    public static final double k_XY_P = 2;
     public static final double k_XY_I = 0.0;
     public static final double k_XY_D = 0.0;
 
-    public static final double k_THETA_P = 5.0;
+    public static final double k_THETA_P = 5; //3
     public static final double k_THETA_I = 0.0;
     public static final double k_THETA_D = 0.0;
     public static final double k_THETA_TOLORANCE_DEGREES = 2.0;

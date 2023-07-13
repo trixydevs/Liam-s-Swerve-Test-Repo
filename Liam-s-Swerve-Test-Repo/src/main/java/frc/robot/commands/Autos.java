@@ -69,6 +69,8 @@ public final class Autos {
     );
     // add autos to smart dashboard.\
     autoChooser.addOption("example auto", ExampleAuto());
+    autoChooser.addOption("forwardddd!!!", forwardAuto());
+    autoChooser.addOption("cool circle :o", coolCircle());
 
 }
 
@@ -81,6 +83,21 @@ public final class Autos {
     );
   }
 
+  public SequentialCommandGroup forwardAuto()
+  {
+    return new SequentialCommandGroup(
+
+    autobuilder.fullAuto(driveforwardTwo)
+    );
+  }
+
+  public SequentialCommandGroup coolCircle()
+  {
+    return new SequentialCommandGroup(
+
+    autobuilder.fullAuto(coolCircle)
+    );
+  }
 
 
   public static CommandBase exampleAuto(ExampleSubsystem subsystem) {
@@ -88,4 +105,8 @@ public final class Autos {
   }
 
  static List<PathPlannerTrajectory> driveforward = PathPlanner.loadPathGroup("My First Path", new PathConstraints(2.5, 1.75));
+ static List<PathPlannerTrajectory> driveforwardTwo = PathPlanner.loadPathGroup("move forward a lil bit", new PathConstraints(2.5, 1.75));
+ static List<PathPlannerTrajectory> coolCircle = PathPlanner.loadPathGroup("cool circle 2", new PathConstraints(2.5, 1.75));
+
+
 }

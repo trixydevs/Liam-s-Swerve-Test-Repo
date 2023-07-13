@@ -54,20 +54,20 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
-
+    
     driveController = new PS4Controller(0);
     eventMap  = new HashMap<>();
     autoChooser = new SendableChooser<>();
-
+    
     drivetrain = new DrivetrainSubsystem();
-
+    configureBindings();
+    
     defaultDrive = new Drive(
       drivetrain,
       ()-> driveController.getL1Button(),
-      ()-> modifyAxis(driveController.getRawAxis(Constants.PS4Driver.Y_AXIS), Constants.PS4Driver.DEADBAND_NORMAL),
-      ()-> modifyAxis(driveController.getRawAxis(Constants.PS4Driver.X_AXIS), Constants.PS4Driver.DEADBAND_NORMAL),
-      ()-> modifyAxis(driveController.getRawAxis(Constants.PS4Driver.Z_AXIS), Constants.PS4Driver.DEADBAND_NORMAL));
+      ()-> modifyAxis(-driveController.getRawAxis(Constants.PS4Driver.Y_AXIS), Constants.PS4Driver.DEADBAND_NORMAL),
+      ()-> modifyAxis(-driveController.getRawAxis(Constants.PS4Driver.X_AXIS), Constants.PS4Driver.DEADBAND_NORMAL),
+      ()-> modifyAxis(-driveController.getRawAxis(Constants.PS4Driver.Z_AXIS), Constants.PS4Driver.DEADBAND_NORMAL));
     
     drivetrain.setDefaultCommand(defaultDrive);
     SmartDashboard.putBoolean("Use limelight", false);
@@ -92,7 +92,8 @@ public class RobotContainer {
 
 
   private void configureBindings() {
-    // new Trigger(driveController::getPSButton).onTrue(Commands.runOnce(drivetrain::zeroGyroscope, drivetrain));
+    // new Trigger(()->false).onTrue(Commands.runOnce(()->System.out.println("test")));
+     new Trigger(driveController::getPSButton).onTrue(Commands.runOnce(drivetrain::zeroGyroscope));
    
   }
 
